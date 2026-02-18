@@ -230,16 +230,6 @@ class TradingManager{
       v9_settings                   = support[i++];//"--------------------< v9 Settings >--------------------";//v9 Settings ............................................................................................................
       v9_filter_enable_tdfi_diver   = (int)support[i++];//false;                //Toggle TDFI divergence
 
-      v11_settings                  = support[i++];//"--------------------< v11 Settings >--------------------";//v11 Settings ............................................................................................................
-      extreme_or_delta_enable_m1    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for M1
-      extreme_or_delta_enable_m5    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for M5
-      extreme_or_delta_enable_m15   = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for M15
-      extreme_or_delta_enable_h1    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for H1
-      extreme_or_delta_enable_h4    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for H4
-      extreme_or_delta_enable_d1    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for D1
-      extreme_or_delta_enable_w1    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for W1
-      extreme_or_delta_enable_mn    = (int)support[i++];//false;                //Enable Extreme Levels OR Delta filter for MN
-
       mbfx_settings_m1 = support[i++];
       mbfx_Len_m1 = (int)support[i++];
       mbfx_Filter_m1 = StringToDouble(support[i++]);
@@ -274,6 +264,7 @@ class TradingManager{
       delta_filter_enable_m1 = (int)support[i++]; 
       delta_filter_lvl_up_m1 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_m1 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_m1 = (int)support[i++];
       //v8_filter_enable_ema50_100_m1 = StringToDouble(support[i++]);
       
       mbfx_settings_m5 = support[i++]; 
@@ -310,6 +301,7 @@ class TradingManager{
       delta_filter_enable_m5 = (int)support[i++];
       delta_filter_lvl_up_m5 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_m5 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_m5 = (int)support[i++];
       //v8_filter_enable_ema50_100_m5 = StringToDouble(support[i++]);
 
 
@@ -346,6 +338,7 @@ class TradingManager{
       delta_filter_enable_m15 = (int)support[i++];
       delta_filter_lvl_up_m15 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_m15 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_m15 = (int)support[i++];
       //v8_filter_enable_ema50_100_m15 = StringToDouble(support[i++]);
       
       mbfx_settings_m30 = support[i++];
@@ -378,6 +371,7 @@ class TradingManager{
       convergence_enable_m30 = (int)support[i++];
       convergence_color_m30 = StringToColor(support[i++]);
       convergence_width_m30 = (int)support[i++];
+      extreme_or_delta_enable_m30 = (int)support[i++];
       //v8_filter_enable_ema50_100_m30 = StringToDouble(support[i++]);
       
       mbfx_settings_h1 = support[i++];
@@ -413,6 +407,7 @@ class TradingManager{
       delta_filter_enable_h1 = (int)support[i++];
       delta_filter_lvl_up_h1 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_h1 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_h1 = (int)support[i++];
       //v8_filter_enable_ema50_100_h1 = StringToDouble(support[i++]);
       
       mbfx_settings_h4 = support[i++];
@@ -448,6 +443,7 @@ class TradingManager{
       delta_filter_enable_h4 = (int)support[i++];
       delta_filter_lvl_up_h4 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_h4 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_h4 = (int)support[i++];
       //v8_filter_enable_ema50_100_h4 = StringToDouble(support[i++]);
       
       mbfx_settings_d1 = support[i++];
@@ -483,6 +479,7 @@ class TradingManager{
       delta_filter_enable_d1 = (int)support[i++];
       delta_filter_lvl_up_d1 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_d1 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_d1 = (int)support[i++];
       //v8_filter_enable_ema50_100_d1 = StringToDouble(support[i++]);
       
       mbfx_settings_w1 = support[i++];
@@ -518,6 +515,7 @@ class TradingManager{
       delta_filter_enable_w1 = (int)support[i++];
       delta_filter_lvl_up_w1 = StringToDouble(support[i++]);
       delta_filter_lvl_dn_w1 = StringToDouble(support[i++]);
+      extreme_or_delta_enable_w1 = (int)support[i++];
       //v8_filter_enable_ema50_100_w1 = StringToDouble(support[i++]);
       
       mbfx_settings_mn = support[i++];
@@ -550,6 +548,7 @@ class TradingManager{
       convergence_enable_mn = (int)support[i++];
       convergence_color_mn = StringToColor(support[i++]);
       convergence_width_mn = (int)support[i++];
+      extreme_or_delta_enable_mn = (int)support[i++];
       //v8_filter_enable_ema50_100_mn = StringToDouble(support[i++]);
    
    }
