@@ -1635,6 +1635,105 @@ class Filter_v9TdfiDiver_ZoneSignal : public Signal{
    }
 };
 
+class FilterExtremeOrDeltaSignal : public Signal{
+   public:
+   int               sIndex;
+   int               sIndex_Next;
+   ENUM_TIMEFRAMES   sTf;
+   ENUM_TIMEFRAMES   sTf_Next;
+   
+   FilterExtremeOrDeltaSignal(int index){
+      sIndex      = index;
+      sTf         = glArray_Timeframes[sIndex];
+      // For M15, skip M30 and use H1 (add 2 instead of 1)
+      int   add   = sTf == PERIOD_M15 ? 2 : 1;
+      sIndex_Next = sIndex + add;
+      sTf_Next    = sIndex_Next < ArraySize(glArray_Timeframes) ? glArray_Timeframes[sIndex_Next] : PERIOD_CURRENT;
+      name        = "FilterExtremeOrDeltaSignal::"+TM.ToString(sTf);
+   }
+   
+   void CalculateOpenSignal(int shift){
+      openSignal = NO;
+      
+      datetime timeBase    = iTime(_Symbol,_Period,shift);
+      int      barCur      = iBarShift(_Symbol,sTf,timeBase);
+      
+      double   buf0_0      = TM.GetIndicator_Mdfx(sIndex, 0, barCur);
+      
+      // Check Extreme Levels
+      double   upper_buy   = glArray_upper_level_buy_x[sIndex];
+      double   lower_buy   = glArray_lower_level_buy_x[sIndex];
+      double   upper_sell  = glArray_upper_level_sell_x[sIndex];
+      double   lower_sell  = glArray_lower_level_sell_x[sIndex];
+      
+      bool     isNotNull   = buf0_0 != EMPTY_VALUE;
+      bool     isBuyExtreme= buf0_0 <= upper_buy && buf0_0 >= lower_buy;
+      bool     isSellExtreme= buf0_0 >= lower_sell && buf0_0 <= upper_sell;
+      
+      // Check Delta (if higher timeframe exists)
+      bool     isBuyDelta  = false;
+      bool     isSellDelta = false;
+      
+      if (sIndex_Next < ArraySize(glArray_Timeframes)){
+         int      barCur_N    = iBarShift(_Symbol,sTf_Next,timeBase);
+         double   buf0_0_N    = TM.GetIndicator_Mdfx(sIndex_Next, 0, barCur_N);
+         double   delta       = buf0_0_N - buf0_0;
+         
+         double   lvl_up      = glArray_delta_filter_lvl_up[sIndex];
+         double   lvl_dn      = glArray_delta_filter_lvl_dn[sIndex];
+         
+         bool     isNotNull_N = buf0_0_N != EMPTY_VALUE;
+         
+         if (isNotNull_N){
+            isBuyDelta  = delta > lvl_up;
+            isSellDelta = delta < lvl_dn;
+         }
+      }
+      
+      // OR condition: Extreme OR Delta
+      bool     isBuy       = isBuyExtreme || isBuyDelta;
+      bool     isSell      = isSellExtreme || isSellDelta;
+      
+      if (isNotNull){
+         if (isBuy){
+            openSignal  = BUY;
+         }
+         if (isSell){
+            openSignal  = openSignal == NO ? SELL : BOTH;
+         }
+      }
+      
+      if (!enable_external_use){
+         ArrayResize(openStringVals,0);
+      
+         TM.AddInArray(openStringVals, TM.ToString(isNotNull));
+         TM.AddInArray(openStringVals, TM.ToString(isBuy));
+         TM.AddInArray(openStringVals, TM.ToString(isSell));
+         
+         TM.AddInArray(openStringVals, TM.ToString(SEP));
+         TM.AddInArray(openStringVals, TM.ToString("Extreme:"));
+         TM.AddInArray(openStringVals, TM.ToString(isBuyExtreme));
+         TM.AddInArray(openStringVals, TM.ToString(isSellExtreme));
+         
+         TM.AddInArray(openStringVals, TM.ToString(SEP));
+         TM.AddInArray(openStringVals, TM.ToString("Delta:"));
+         TM.AddInArray(openStringVals, TM.ToString(isBuyDelta));
+         TM.AddInArray(openStringVals, TM.ToString(isSellDelta));
+      
+         TM.AddInArray(openStringVals, TM.ToString(SEP));
+         TM.AddInArray(openStringVals, TM.ToString(buf0_0));
+         TM.AddInArray(openStringVals, TM.ToString(upper_buy));
+         TM.AddInArray(openStringVals, TM.ToString(lower_buy));
+         TM.AddInArray(openStringVals, TM.ToString(upper_sell));
+         TM.AddInArray(openStringVals, TM.ToString(lower_sell));
+         
+         TM.AddInArray(openStringVals, TM.ToString(SEP));
+         TM.AddInArray(openStringVals, TM.ToString(shift));
+         TM.AddInArray(openStringVals, TM.ToString(barCur));
+      }
+   }
+};
+
 class FilterTimeSessionSignal : public Signal{
    public:
    datetime sTimeCur;
